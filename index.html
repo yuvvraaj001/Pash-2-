@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASH - Silver that Slays | AI Jewelry Designer & AR Try-On</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>PASH</h1>
+                    <span class="tagline">Silver that Slays</span>
+                </div>
+                <nav class="nav">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#shop" class="nav-link">Shop</a>
+                    <a href="#design-studio" class="nav-link">Design Studio</a>
+                    <a href="#collections" class="nav-link">Collections</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </nav>
+                <div class="header-actions">
+                    <button class="icon-btn ar-highlight" id="arBtn" title="Try AR">
+                        <i class="fas fa-camera"></i>
+                        <span class="ar-badge">AR</span>
+                    </button>
+                    <button class="icon-btn" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="icon-btn" id="accountBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button class="icon-btn" id="wishlistBtn">
+                        <i class="fas fa-heart"></i>
+                        <span class="count" id="wishlistCount">0</span>
+                    </button>
+                    <button class="icon-btn" id="cartBtn">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Modal -->
+    <div class="modal hidden" id="searchModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="search-container">
+                <input type="text" placeholder="Search jewelry..." class="search-input" id="searchInput">
+                <button class="btn btn--primary" id="searchSubmit">Search</button>
+            </div>
+            <button class="modal-close" id="closeSearch">&times;</button>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal hidden" id="cartModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="cart-header">
+                <h3>Shopping Cart</h3>
+                <button class="modal-close" id="closeCart">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart">Your cart is empty</p>
+            </div>
+            <div class="cart-footer hidden" id="cartFooter">
+                <div class="cart-total">
+                    <strong>Total: $<span id="cartTotal">0</span></strong>
+                </div>
+                <button class="btn btn--primary btn--full-width">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Virtual Try-On Modal -->
+    <div class="modal hidden" id="tryOnModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content try-on-content">
+            <button class="modal-close" id="closeTryOn">&times;</button>
+            <div class="try-on-header">
+                <h3>Virtual Try-On</h3>
+                <div class="try-on-product-info">
+                    <span id="tryOnProductName"></span>
+                    <span id="tryOnProductPrice"></span>
+                </div>
+            </div>
+            <div class="try-on-body">
+                <div class="try-on-camera">
+                    <div class="camera-placeholder">
+                        <i class="fas fa-camera fa-3x"></i>
+                        <p>Camera simulation for AR Try-On</p>
+                        <div class="jewelry-overlay" id="jewelryOverlay"></div>
+                    </div>
+                    <div class="try-on-instructions" id="tryOnInstructions">
+                        <p>Position yourself for the best experience</p>
+                    </div>
+                </div>
+                <div class="try-on-controls">
+                    <button class="btn btn--outline" id="captureBtn">
+                        <i class="fas fa-camera"></i> Capture
+                    </button>
+                    <button class="btn btn--outline" id="shareBtn">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                    <button class="btn btn--primary" id="addToCartFromTryOn">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2>AI-Powered Jewelry Design</h2>
+                <p>Create custom pieces with our AI Designer or try on jewelry virtually with AR technology</p>
+                <div class="hero-actions">
+                    <button class="btn btn--primary btn--lg" onclick="scrollToSection('design-studio')">
+                        <i class="fas fa-magic"></i> Design Studio
+                    </button>
+                    <button class="btn btn--outline btn--lg" onclick="scrollToSection('shop')">
+                        <i class="fas fa-camera"></i> Try AR
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop" alt="Featured Jewelry">
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Design Studio Section -->
+    <section class="section design-studio-section" id="design-studio">
+        <div class="container">
+            <div class="section-header">
+                <h2>AI Design Studio</h2>
+                <p>Create Your Perfect Piece with Artificial Intelligence</p>
+            </div>
+            
+            <div class="design-studio-content">
+                <div class="design-steps">
+                    <div class="design-step active" data-step="1">
+                        <div class="step-header">
+                            <div class="step-number">1</div>
+                            <h3>Select Jewelry Type</h3>
+                        </div>
+                        <div class="jewelry-types">
+                            <button class="jewelry-type-btn" data-type="rings">
+                                <i class="fas fa-ring"></i>
+                                <span>Rings</span>
+                            </button>
+                            <button class="jewelry-type-btn" data-type="necklaces">
+                                <i class="fas fa-gem"></i>
+                                <span>Necklaces</span>
+                            </button>
+                            <button class="jewelry-type-btn" data-type="earrings">
+                                <i class="fas fa-circle"></i>
+                                <span>Earrings</span>
+                            </button>
+                            <button class="jewelry-type-btn" data-type="bracelets">
+                                <i class="fas fa-circle-notch"></i>
+                                <span>Bracelets</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="design-step" data-step="2">
+                        <div class="step-header">
+                            <div class="step-number">2</div>
+                            <h3>Describe Your Vision</h3>
+                        </div>
+                        <div class="design-prompt">
+                            <textarea 
+                                id="designPrompt" 
+                                placeholder="Describe your perfect piece... (e.g., 'A minimalist ring with celestial motifs')"
+                                class="form-control"
+                                rows="4"
+                            ></textarea>
+                            <div class="prompt-examples">
+                                <p>Examples:</p>
+                                <button class="example-btn" data-example="Minimalist ring inspired by moon phases">Moon phases ring</button>
+                                <button class="example-btn" data-example="Bold necklace with geometric patterns">Geometric necklace</button>
+                                <button class="example-btn" data-example="Delicate earrings with vintage flower motifs">Vintage flower earrings</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="design-step" data-step="3">
+                        <div class="step-header">
+                            <div class="step-number">3</div>
+                            <h3>Choose Style & Material</h3>
+                        </div>
+                        <div class="design-options">
+                            <div class="option-group">
+                                <label>Style</label>
+                                <select id="designStyle" class="form-control">
+                                    <option value="minimalist">Minimalist</option>
+                                    <option value="statement">Statement</option>
+                                    <option value="vintage">Vintage</option>
+                                    <option value="modern">Modern</option>
+                                </select>
+                            </div>
+                            <div class="option-group">
+                                <label>Material</label>
+                                <select id="designMaterial" class="form-control">
+                                    <option value="925-silver">925 Sterling Silver</option>
+                                    <option value="silver-gold">Silver with Gold Plating (+$25)</option>
+                                    <option value="silver-rose-gold">Silver with Rose Gold Plating (+$25)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="design-step" data-step="4">
+                        <div class="step-header">
+                            <div class="step-number">4</div>
+                            <h3>Generate Designs</h3>
+                        </div>
+                        <div class="generate-section">
+                            <button class="btn btn--primary btn--lg" id="generateDesigns">
+                                <i class="fas fa-magic"></i> Generate AI Designs
+                            </button>
+                            <div class="generating-animation hidden" id="generatingAnimation">
+                                <div class="loading-spinner"></div>
+                                <p>AI is creating your custom designs...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="design-navigation">
+                    <button class="btn btn--outline" id="prevStep" disabled>Previous</button>
+                    <button class="btn btn--primary" id="nextStep">Next</button>
+                </div>
+            </div>
+
+            <div class="generated-designs hidden" id="generatedDesigns">
+                <h3>Your AI-Generated Designs</h3>
+                <div class="designs-grid" id="designsGrid">
+                    <!-- Generated designs will be populated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Collections -->
+    <section class="section" id="collections">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Collections</h2>
+                <p>Curated collections for every style and occasion</p>
+            </div>
+            <div class="collections-grid">
+                <div class="collection-card">
+                    <div class="collection-image">
+                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600" alt="Everyday Essentials">
+                    </div>
+                    <div class="collection-content">
+                        <h3>Everyday Essentials</h3>
+                        <p>Timeless pieces for daily wear</p>
+                        <button class="btn btn--outline">Shop Now</button>
+                    </div>
+                </div>
+                <div class="collection-card">
+                    <div class="collection-image">
+                        <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=600" alt="Statement Pieces">
+                    </div>
+                    <div class="collection-content">
+                        <h3>Statement Pieces</h3>
+                        <p>Bold jewelry that makes an impact</p>
+                        <button class="btn btn--outline">Shop Now</button>
+                    </div>
+                </div>
+                <div class="collection-card">
+                    <div class="collection-image">
+                        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600" alt="Minimal Chic">
+                    </div>
+                    <div class="collection-content">
+                        <h3>Minimal Chic</h3>
+                        <p>Clean lines and contemporary design</p>
+                        <button class="btn btn--outline">Shop Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About PASH</h2>
+                    <p>Modern silver jewelry for the bold and sophisticated. Crafted for Gen Z and Millennials who appreciate timeless design with contemporary flair.</p>
+                    <p>Now featuring cutting-edge AI design technology and AR try-on experiences, we're revolutionizing how you discover and create your perfect jewelry pieces.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=500" alt="About PASH">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section" id="shop">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Products</h2>
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="rings">Rings</button>
+                    <button class="filter-btn" data-filter="necklaces">Necklaces</button>
+                    <button class="filter-btn" data-filter="earrings">Earrings</button>
+                    <button class="filter-btn" data-filter="bracelets">Bracelets</button>
+                    <button class="filter-btn ai-filter" data-filter="ai-designs">
+                        <i class="fas fa-magic"></i> AI Designs
+                    </button>
+                </div>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose PASH -->
+    <section class="section features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose PASH</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>AI Design Studio</h3>
+                    <p>Create custom pieces with artificial intelligence</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>AR Try-On</h3>
+                    <p>See how jewelry looks on you with AR technology</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3>Premium Silver</h3>
+                    <p>925 sterling silver, ethically sourced</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Fast Shipping</h3>
+                    <p>Express delivery within 2-3 business days</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Quick View Modal -->
+    <div class="modal hidden" id="quickViewModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content quick-view-content">
+            <button class="modal-close" id="closeQuickView">&times;</button>
+            <div class="quick-view-body">
+                <div class="quick-view-image">
+                    <img id="quickViewImage" src="" alt="">
+                </div>
+                <div class="quick-view-details">
+                    <h3 id="quickViewName"></h3>
+                    <p class="price" id="quickViewPrice"></p>
+                    <p id="quickViewDescription"></p>
+                    <div class="quick-view-actions">
+                        <button class="btn btn--outline" id="quickViewTryOn">
+                            <i class="fas fa-camera"></i> Try AR
+                        </button>
+                        <button class="btn btn--primary" id="quickViewAddToCart">Add to Cart</button>
+                        <button class="btn btn--outline" id="quickViewAddToWishlist">
+                            <i class="fas fa-heart"></i> Add to Wishlist
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <h3>PASH</h3>
+                        <span class="tagline">Silver that Slays</span>
+                    </div>
+                    <p>Modern silver jewelry powered by AI design and AR technology.</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#shop">Shop</a></li>
+                        <li><a href="#design-studio">Design Studio</a></li>
+                        <li><a href="#collections">Collections</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Innovation</h4>
+                    <ul>
+                        <li><a href="#design-studio">AI Designer</a></li>
+                        <li><a href="#shop">AR Try-On</a></li>
+                        <li><a href="#">Custom Orders</a></li>
+                        <li><a href="#">3D Printing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Stay updated with our latest AI designs and AR features</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Enter your email" class="form-control">
+                        <button class="btn btn--primary">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PASH. All rights reserved. | AI-Powered Jewelry Design</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
